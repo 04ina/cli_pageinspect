@@ -1,7 +1,9 @@
 include_dir = src/include
-FLAGS := -g 
+test_dir = src/test
+FLAGS := -g
 
 LIBS = -I$(top_build_dir)/$(include_dir)/relpages \
     -I$(top_build_dir)/$(include_dir)/UI \
     -I$(top_build_dir)/$(include_dir)/utils \
     -I$(top_build_dir)/$(include_dir)
+    

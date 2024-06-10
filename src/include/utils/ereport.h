@@ -15,7 +15,7 @@
 
 #include <c.h>
 
-enum 
+typedef enum 
 {
     DEBUG,
     LOG,
