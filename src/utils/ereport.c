@@ -13,14 +13,6 @@
 #include "ereport.h"
 #include <time.h>
 
-static const char *
-GetELevelName(int elevel);
-
-static void
-ELevelProcessing(int elevel);
-
-static const char *
-GetCurTimeDateAsStr(void);
 
 const char *
 GetELevelName(int elevel)

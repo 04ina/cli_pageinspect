@@ -10,7 +10,8 @@
  *------------------------------------------------------------------------- 
  */
 
-#include "include/c.h"
+#include <c.h>
+#include <ereport.h>
 
 /*
  * advanced malloc
@@ -24,7 +25,7 @@ myalloc(size_t size, bool init_memory)
         ereport(ERROR, "Fatal: failed to allocate memory");
 
     if (init_memory)
-        memset(pt, '0x00', size); 
+        memset(pt, 0x00, size); 
 
     return pt;
 }

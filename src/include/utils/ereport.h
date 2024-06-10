@@ -15,19 +15,28 @@
 
 #include <c.h>
 
-typedef enum ErrorLevelCode {
+enum 
+{
     DEBUG,
     LOG,
     ERROR
 } ErrorLevelCode;
 
+const char *
+GetCurTimeDateAsStr(void);
+
+const char *
+GetELevelName(int elevel);
+
+void
+ELevelProcessing(int elevel);
 
 #define ereport(elevel, ...)                                \
     do {                                                    \
         fprintf(stderr, "%s %s: ", GetCurTimeDateAsStr(),   \
                           GetELevelName(elevel));           \
         fprintf(stderr, __VA_ARGS__);                       \
-        fputc('\n', stderr);                                \ 
+        fputc('\n', stderr);                                \
         ELevelProcessing(elevel);                           \
     } while(0)
 

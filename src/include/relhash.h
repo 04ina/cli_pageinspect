@@ -8,7 +8,7 @@
  *-------------------------------------------------------------------------
  */
 #ifndef RELHASH_H 
-#include RELHASH_H 
+#define RELHASH_H 
 
 #include "relinfo.h"
 
@@ -60,6 +60,6 @@ RHTAddPagesAndSegs(RelHashTable rht, Oid oid, int32 fork_type,
                    int32 n_segs, int32 n_pages);
 
 bool
-RHTGetRelInfo(RelHashTable rht, Oid oid, RelInfo *rel_info)
+RHTGetRelInfo(RelHashTable rht, Oid oid, RelInfo *rel_info);
 
 #endif  /* RELHASH_H */

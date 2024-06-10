@@ -8,22 +8,13 @@
  *-------------------------------------------------------------------------
  */
 
-#include "include/relhash.h"
-#include "ereport.h"
-
-static uint32
-RHTHashFunc(Oid oid, uint32 base);
-
-static bool 
-RHTGetNumEmptyEl(RelHashTable rht, Oid oid, uint32 *result);
-
-static bool 
-RHTGetNumFilledEl(RelHashTable rht, Oid oid, uint32 *result);
+#include <relhash.h>
+#include <ereport.h>
 
 /*
  * Hash function 
  */
-static uint32
+static uint32 
 RHTHashFunc(Oid oid, uint32 base)
 {
     return oid % base;
@@ -39,7 +30,7 @@ static bool
 RHTGetEmptyElN(RelHashTable rht, Oid oid, uint32 *result)
 {
     uint32 hashed_val = 0;
-    bool hash_el_found = 0;
+    bool hash_el_found = false;
 
     hashed_val = RHTHashFunc(oid, rht->n_els);
 
@@ -72,7 +63,7 @@ static bool
 RHTGetNumFilledEl(RelHashTable rht, Oid oid, uint32 *result)
 {
     uint32 hashed_val = 0;
-    bool hash_el_found = 0;
+    bool hash_el_found = false;
 
     hashed_val = RHTHashFunc(oid, rht->n_els);
 
@@ -104,9 +95,9 @@ RHTInit(uint32 n_els)
     if (n_els == 0)
         ereport(ERROR, "Hashtable can't contain 0 elements");
 
-    rht = (RelHashTableData *) myalloc(sizeof(RelHashTableData));
+    rht = (RelHashTableData *) myalloc(sizeof(RelHashTableData), true);
 
-    rht->hash_el_arr = (RelHashEl *) myalloc(n_els * sizeof(RelHashEl));
+    rht->hash_el_arr = (RelHashEl *) myalloc(n_els * sizeof(RelHashEl), true);
 
     rht->n_els = n_els;
 
@@ -139,7 +130,7 @@ uint32
 RHTInitRel(RelHashTable rht, Oid oid)
 {
     uint32 n_empty_el = 0;
-    bool hash_not_overflow = 0;
+    bool hash_not_overflow = false;
     
     hash_not_overflow = RHTGetEmptyElN(rht, oid, &n_empty_el);
     if (!hash_not_overflow)
@@ -147,7 +138,7 @@ RHTInitRel(RelHashTable rht, Oid oid)
 
     rht->hash_el_arr[n_empty_el].oid = oid;
 
-    rht->hash_el_arr[n_empty_el].rel_info = myalloc(sizeof(RelInfo));
+    rht->hash_el_arr[n_empty_el].rel_info = myalloc(sizeof(RelInfo), true);
 
     return n_empty_el;
 }
@@ -164,9 +155,9 @@ RHTAddPagesAndSegs(RelHashTable rht, Oid oid, int32 fork_type,
                    int32 n_segs, int32 n_pages)
 {
     uint32 n_el = 0;  
-    bool hash_el_not_found = 0;
+    bool hash_el_not_found = false;
 
-    hash_el_not_found = RHTGetNumFilledEl(rht, oid, n_el); 
+    hash_el_not_found = RHTGetNumFilledEl(rht, oid, &n_el); 
 
     if (hash_el_not_found) 
         n_el = RHTInitRel(rht, oid);
@@ -206,7 +197,7 @@ bool
 RHTGetRelInfo(RelHashTable rht, Oid oid, RelInfo *rel_info)
 {
     uint32 n_el = 0;
-    bool el_not_found;
+    bool el_not_found = false;
 
     el_not_found = RHTGetNumFilledEl(rht, oid, &n_el);
     if (el_not_found)

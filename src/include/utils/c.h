@@ -55,6 +55,6 @@ typedef double float64;
 typedef char *String;
 
 void *
-myalloc(size_t);
+myalloc(size_t size, bool init_memory);
 
 #endif  /* C_H */

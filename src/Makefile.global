@@ -1,0 +1,7 @@
+include_dir = src/include
+FLAGS := -g 
+
+LIBS = -I$(top_build_dir)/$(include_dir)/relpages \
+    -I$(top_build_dir)/$(include_dir)/UI \
+    -I$(top_build_dir)/$(include_dir)/utils \
+    -I$(top_build_dir)/$(include_dir)
